@@ -1,0 +1,33 @@
+{
+  "name": "report.itsdani.dev",
+  "version": "1.0.0",
+  "description": "A reporting page for users to report accounts, submit photos, and select reporting categories.",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "build": "webpack --mode production",
+    "dev": "webpack serve --mode development"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2",
+    "babel-loader": "^8.2.2",
+    "babel-core": "^7.0.0",
+    "babel-preset-env": "^1.7.0"
+  },
+  "keywords": [
+    "reporting",
+    "webhook",
+    "discord",
+    "form"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
