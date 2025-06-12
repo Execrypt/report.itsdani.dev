@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Request</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* From Uiverse.io by Codewithvinay */
+        body {
+            font-family: 'Manrope', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 10px;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333333;
+            text-align: center;
+        }
+
+        label {
+            font-weight: 600;
+            margin-top: 10px;
+            display: block;
+            color: #333333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #dddddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #4A9DEC;
+            box-shadow: 0 0 5px rgba(74, 157, 236, 0.2);
+            outline: none;
+        }
+
+        input[type="submit"] {
+            background-color: #4A9DEC;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #357ab8;
+        }
+
+        small {
+            display: block;
+            margin-top: -15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #777777;
+        }
+
+        .card {
+            width: 190px;
+            height: 254px;
+            border-radius: 50px;
+            background: #e0e0e0;
+            box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+            position: absolute; /* Position the card absolutely */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust for centering */
+            z-index: -1; /* Place behind the form */
+        }
+
+        button {
+            border: none;
+            display: flex;
+            padding: 0.75rem 1.5rem;
+            background-color: #488aec;
+            color: #ffffff;
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            text-transform: uppercase;
+            vertical-align: middle;
+            align-items: center;
+            border-radius: 0.5rem;
+            user-select: none;
+            gap: 0.75rem;
+            box-shadow: 0 4px 6px -1px #488aec31, 0 2px 4px -1px #488aec17;
+            transition: all 0.6s ease;
+        }
+
+        button:hover {
+            box-shadow: 0 10px 15px -3px #488aec4f, 0 4px 6px -2px #488aec17;
+        }
+
+        button:focus,
+        button:active {
+            opacity: 0.85;
+            box-shadow: none;
+        }
+
+        button svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        /* Popup styles */
+        .card#popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 300px;
+            padding: 10px;
+            height: auto;
+            border-radius: 10px;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .card#popup .dismiss {
+            background: none;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+
+        .card#popup .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .card#popup .header .image {
+            width: 30px;
+            height: 30px;
+            margin-right: 5px;
+        }
+
+        .card#popup .header .image svg {
+            width: 20px;
+            height: 20px;
+            stroke: #4A9DEC;
+        }
+
+        .card#popup .header .content {
+            flex: 1;
+        }
+
+        .card#popup .header .content .title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin: 0;
+        }
+
+        .card#popup .header .content .message {
+            font-size: 12px;
+            color: #555;
+            margin: 5px 0 0 0;
+        }
+
+        .card#popup .actions {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .card#popup .actions .history {
+            background-color: #4A9DEC;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .card#popup .actions .history:hover {
+            background-color: #357ab8;
+        }
+    </style>
+</head>
+<body>
+    <div class="card" id="popup" style="display: none; max-width: 300px; padding: 10px; height: auto;">
+        <button class="dismiss" type="button" onclick="redirectToMain()" style="top: 5px; right: 5px;">×</button>
+        <div class="header" style="margin-bottom: 10px;">
+            <div class="image" style="width: 30px; height: 30px; margin-right: 5px;">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 7L9.00004 18L3.99994 13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+            <div class="content">
+                <span class="title" style="font-size: 16px;">Report Submitted</span>
+                <p class="message" style="font-size: 12px; color: #555;">Thank you for your report. We will review it shortly.</p>
+            </div>
+        </div>
+        <div class="actions" style="text-align: center; margin-top: 10px;">
+            <button class="history" type="button" onclick="redirectToMain()" style="padding: 8px 15px; font-size: 14px; border-radius: 5px;">Go to Main Page</button>
+        </div>
+    </div>
+    <div class="container" id="formContainer">
+        <h1>Report an Account</h1>
+        <form id="reportForm" onsubmit="handleSubmit(event)">
+            <label for="username">Your username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+            <label for="questionType">Type of report</label>
+            <select id="questionType" name="questionType">
+                <option value="">-</option>
+                <option value="spam">Spam</option>
+                <option value="harassment">Hate/Harassment</option>
+                <option value="explicit">Explicit Content</option>
+                <option value="impersonation">Impersonation</option>
+                <option value="self-harm">Self-Harm or Threats</option>
+                <option value="illegal">Illegal Activity</option>
+                <option value="violence">Violence or Threats</option>
+            </select>
+            <small>What type of report do you have?</small>
+
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="Enter subject" required>
+
+            <label for="description">Description</label>
+            <textarea id="description" name="description" placeholder="Enter description" rows="4" required></textarea>
+
+            <!-- File upload section -->
+            <div style="display: flex; justify-content: center; margin: 20px 0;">
+                <label for="attachments" style="display: none;">Attachments (optional)</label>
+                <input 
+                    type="file" 
+                    id="attachments" 
+                    name="attachments" 
+                    style="display: none;" 
+                    accept="image/*,video/*" 
+                    multiple 
+                    onchange="handleFileUpload(event)"
+                >
+                <button type="button" onclick="document.getElementById('attachments').click()">
+                    <svg
+                        aria-hidden="true"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            stroke-width="2"
+                            stroke="#ffffff"
+                            d="M13.5 3H12H8C6.34315 3 5 4.34315 5 6V18C5 19.6569 6.34315 21 8 21H11M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V11.8125"
+                            stroke-linejoin="round"
+                            stroke-linecap="round"
+                        ></path>
+                        <path
+                            stroke-linejoin="round"
+                            stroke-linecap="round"
+                            stroke-width="2"
+                            stroke="#ffffff"
+                            d="M17 15V18M17 21V18M17 18H14M17 18H20"
+                        ></path>
+                    </svg>
+                    ADD FILE
+                </button>
+            </div>
+            <div id="fileList" style="margin-top: 10px; font-size: 14px; color: #555;"></div>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script>
+        const uploadedFiles = [];
+
+        function handleFileUpload(event) {
+            const fileInput = event.target;
+            const fileList = document.getElementById('fileList');
+            const files = fileInput.files;
+            const allowedFormats = ['image', 'video'];
+
+            Array.from(files).forEach((file) => {
+                const fileType = file.type.split('/')[0];
+                if (allowedFormats.includes(fileType)) {
+                    uploadedFiles.push(file); // Add each valid file to the uploadedFiles array
+                }
+            });
+
+            updateFileList();
+        }
+
+        function updateFileList() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = ''; // Clear previous file list
+
+            uploadedFiles.forEach((file, index) => {
+                const listItem = document.createElement('div');
+                listItem.style.display = 'flex';
+                listItem.style.justifyContent = 'space-between';
+                listItem.style.alignItems = 'center';
+                listItem.style.marginBottom = '5px';
+
+                const fileName = document.createElement('span');
+                fileName.textContent = `${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.style.marginLeft = '10px';
+                removeButton.style.backgroundColor = '#ff4d4d';
+                removeButton.style.color = 'white';
+                removeButton.style.border = 'none';
+                removeButton.style.padding = '5px 10px';
+                removeButton.style.borderRadius = '5px';
+                removeButton.style.cursor = 'pointer';
+                removeButton.onclick = () => {
+                    uploadedFiles.splice(index, 1); // Remove the file from the array
+                    updateFileList(); // Update the file list display
+                };
+
+                listItem.appendChild(fileName);
+                listItem.appendChild(removeButton);
+                fileList.appendChild(listItem);
+            });
+
+            const countMessage = document.createElement('div');
+            countMessage.textContent = `Total files uploaded: ${uploadedFiles.length}`;
+            countMessage.style.fontWeight = 'bold';
+            fileList.appendChild(countMessage);
+        }
+
+        function getSeverityColor(reportType) {
+            switch (reportType) {
+                case "spam":
+                    return 3447003; // Blue
+                case "harassment":
+                    return 15158332; // Red
+                case "explicit":
+                    return 16776960; // Yellow
+                case "impersonation":
+                    return 10181046; // Purple
+                case "self-harm":
+                    return 15844367; // Orange
+                case "illegal":
+                    return 15105570; // Dark Red
+                case "violence":
+                    return 10038562; // Dark Green
+                default:
+                    return 3447003; // Default Blue
+            }
+        }
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+
+            const form = document.getElementById('reportForm');
+            const formData = new FormData(form);
+
+            // Add uploaded files to formData
+            uploadedFiles.forEach((file, index) => {
+                formData.append(`file${index + 1}`, file);
+            });
+
+            // Get the selected report type and determine the embed color
+            const reportType = formData.get('questionType');
+            const embedColor = getSeverityColor(reportType);
+
+            // Prepare embed payload
+            const webhookUrl = 'https://discord.com/api/webhooks/1382521858766798989/keLGNHPAumpHnggax-KuJ9NE7WPBn48x-HMWg3lCjXAdR3zLRFlFDmZ9wDe8-85QyDKo';
+            const embedPayload = {
+                embeds: [
+                    {
+                        title: "New Report Submitted",
+                        color: embedColor,
+                        fields: [
+                            { name: "Username", value: formData.get('username'), inline: true },
+                            { name: "Type of Report", value: reportType, inline: true },
+                            { name: "Subject", value: formData.get('subject'), inline: false },
+                            { name: "Description", value: formData.get('description'), inline: false },
+                        ],
+                    },
+                ],
+            };
+
+            // Add the first uploaded file as an image or video in the embed
+            if (uploadedFiles.length > 0) {
+                const firstFile = uploadedFiles[0];
+                const fileType = firstFile.type.split('/')[0];
+                if (fileType === 'image') {
+                    embedPayload.embeds[0].image = { url: `attachment://${firstFile.name}` };
+                } else if (fileType === 'video') {
+                    embedPayload.embeds[0].video = { url: `attachment://${firstFile.name}` };
+                }
+            }
+
+            // Send files and embed to Discord webhook
+            const discordFormData = new FormData();
+            discordFormData.append('payload_json', JSON.stringify(embedPayload));
+            uploadedFiles.forEach((file, index) => {
+                discordFormData.append(`file${index + 1}`, file);
+            });
+
+            await fetch(webhookUrl, {
+                method: 'POST',
+                body: discordFormData,
+            });
+
+            // Hide form and show popup
+            document.getElementById('formContainer').style.display = 'none';
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function redirectToMain() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
